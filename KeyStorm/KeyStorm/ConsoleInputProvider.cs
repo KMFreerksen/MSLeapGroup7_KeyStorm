@@ -21,6 +21,4 @@ namespace KeyStorm
             return Console.ReadLine();
         }
     }
-    {
-    }
 }
