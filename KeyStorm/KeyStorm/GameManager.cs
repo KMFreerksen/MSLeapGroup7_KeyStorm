@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeyStorm.Interfaces;
 
 namespace KeyStorm
 {
@@ -11,17 +12,35 @@ namespace KeyStorm
     public class GameManager
     {
 
-        // TODO create an input provider to handle user input
-        // TODO create an output provider to handle game output
+        private IInputProvider inputProvider;
+
+        private IOutputProvider outputProvider;
 
         public GameState GameState { get; private set; }
 
-        public GameManager() // require the input and output providers to be passed in
+        // Constructor for the GameManager class
+        public GameManager() : this(new ConsoleInputProvider(), new ConsoleOutputProvider())
+        {
+        }
 
-        // TODO initialize the input provider
-        // TODO initialize the output provider
+        public GameManager(IInputProvider inputProvider, IOutputProvider outputProvider) 
 
         {
+            // Error handling for null input providers
+            if (inputProvider == null)
+            {
+                throw new ArgumentNullException(nameof(inputProvider));
+            }
+            // Error handling for null output providers
+            if (outputProvider == null)
+            {
+                throw new ArgumentNullException(nameof(outputProvider));
+            }
+            // Set the input provider and output provider
+            this.inputProvider = inputProvider;
+            this.outputProvider = outputProvider;
+
+            // Set the GameState to MainMenu
             GameState = GameState.MainMenu;
         }
 
@@ -33,17 +52,18 @@ namespace KeyStorm
                 switch (GameState)
                 {
                     case GameState.MainMenu:
-                        // TODO display the main menu
-                        Console.WriteLine("Welcome to KeyStorm!");
-                        // TODO handle user input for the main menu
-                        Console.WriteLine("Press any key to start the game");
-                        Console.ReadKey();
+                        // Display the main menu
+                        outputProvider.WriteLine("Welcome to KeyStorm!");
+                        outputProvider.WriteLine("Press any key to start the game");
+
+                        // Read the input
+                        inputProvider.Read();
                         break;
                     case GameState.ReadyToStart:
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
                         break;
-                    case GameState.Playing:
+                    case GameState.RaceStarted:
                         // TODO display the game screen
                         // TODO handle user input for the game screen
                         break;
