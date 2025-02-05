@@ -10,7 +10,7 @@ namespace KeyStorm
     {
         MainMenu,
         ReadyToStart,
-        Playing,
+        RaceStarted,
         RaceOver,
         GameOverLeaderboard,
     }
