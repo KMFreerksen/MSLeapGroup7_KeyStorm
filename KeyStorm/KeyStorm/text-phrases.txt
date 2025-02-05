@@ -1,0 +1,20 @@
+Successful teams find effective ways to work on software at every stage of the development life cycle. In recent years, we've added DevOps to the development process to help standardize and automate more phases of the development workflow.
+DevOps is a set of practices that combines software development and IT operations. It aims to shorten the development life cycle and ensure the continuous delivery of high-quality software.
+Think of DevOps as a combination of shared planning tools, a shared code base, continuous integration, test-driven techniques, and automated delivery and deployment.
+The introduction of GitHub Copilot and Copilot Chat in Visual Studio has significantly enhanced code development, debugging, and learning for software engineers.
+Using Copilot for Web and Work is essential for work-specific tasks to avoid leaking confidential information and to ensure efficiency in code development.
+The Augmentation Loop is a Microsoft-provided tool for work-specific tasks, demonstrating its use in understanding and testing code effectively.
+Copilot in Office is highly effective for summarizing documents and producing content, showcasing its ability to quickly understand large documents.
+The importance of using tools like Copilot to increase efficiency and impact cannot be overstated, as faster task completion leads to higher impact.
+Azure DevOps is a comprehensive suite of tools that provides version control, agile planning, continuous integration, and continuous delivery for software projects.
+Test-driven development (TDD) is a software development process where tests are written before the code itself, ensuring that the code meets the desired requirements.
+The testing pyramid emphasizes the importance of having a large number of unit tests, fewer integration tests, and even fewer end-to-end tests to ensure code quality.
+Creating a sample project in Visual Studio involves setting up a test project, writing simple methods, and running unit tests to verify the functionality of the code.
+Debugging tests in Visual Studio allows developers to see variable values and troubleshoot issues in their tests, ensuring that the code behaves as expected.
+Optimizing tests by using the test initialize attribute helps set up common test data, reducing redundancy in test methods and improving test efficiency.
+The use of AI in development work is primarily for coding and learning new languages, but it is not typically used for writing design documents.
+Effective time management while learning involves setting deadlines, time boxing, and working collaboratively as a team to stay accountable and manage time effectively.
+Staying calm under tight deadlines can be achieved through time boxing, setting milestones, and relying on managers and mentors for support.
+A typical workday for developers includes a mix of emails, meetings, development work, and collaboration with team members and stakeholders.
+On-call responsibilities for developers involve reviewing pull requests, monitoring system health, and handling issues that arise, ensuring the smooth operation of the system.
+Problem-solving approaches before AI involved research, collaboration, and leveraging available resources to find solutions to complex issues.
