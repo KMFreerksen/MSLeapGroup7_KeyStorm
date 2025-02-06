@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace KeyStorm
         {
         }
 
-        public GameManager(IInputProvider inputProvider, IOutputProvider outputProvider) 
+        public GameManager(IInputProvider inputProvider, IOutputProvider outputProvider)
 
         {
             // Error handling for null input providers
@@ -45,10 +46,11 @@ namespace KeyStorm
         }
 
         // Start game method to begin the game loop
-        public void StartGame()
+        public async Task StartGame()
         {
             while (true) // main game loop
             {
+                GameState = GameState.RaceStarted;
                 switch (GameState)
                 {
                     case GameState.MainMenu:
@@ -57,7 +59,7 @@ namespace KeyStorm
                         outputProvider.WriteLine("Press any key to start the game");
 
                         // Read the input
-                        inputProvider.Read();
+                        //inputProvider.Read();
                         break;
                     case GameState.ReadyToStart:
                         // TODO display the ready to start screen
@@ -66,9 +68,24 @@ namespace KeyStorm
                     case GameState.RaceStarted:
                         // TODO display the game screen
                         // TODO handle user input for the game screen
+                        Stopwatch stopwatch = new Stopwatch();
+                        stopwatch.Start();
+
+                        outputProvider.WriteLine("Started Game");
+                        while (stopwatch.Elapsed.TotalSeconds < 5)
+                        {
+                            inputProvider.Read();
+                        }
+                        outputProvider.WriteLine("Game done up!");
+                        GameState = GameState.RaceOver;
+                        stopwatch.Stop();
+
                         break;
                     case GameState.RaceOver:
-                    // TODO display the
+                        // TODO display the
+                        outputProvider.WriteLine("Game Over!");
+                        break;
+
                     case GameState.GameOverLeaderboard:
                         // TODO display the game over leaderboard
                         // TODO handle user input for the game over leaderboard
