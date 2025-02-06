@@ -17,6 +17,8 @@ namespace KeyStorm
 
         private IOutputProvider outputProvider;
 
+        private LoadText LoadText;
+
         public GameState GameState { get; private set; }
 
         // Constructor for the GameManager class
@@ -43,6 +45,8 @@ namespace KeyStorm
 
             // Set the GameState to MainMenu
             GameState = GameState.MainMenu;
+            LoadText = new LoadText();
+            LoadText.Load(@"text-phrases.txt");
         }
 
         // Start game method to begin the game loop
@@ -57,13 +61,21 @@ namespace KeyStorm
                         // Display the main menu
                         outputProvider.WriteLine("Welcome to KeyStorm!");
                         outputProvider.WriteLine("Press any key to start the game");
+                        
 
                         // Read the input
-                        //inputProvider.Read();
+                        inputProvider.Read();
+
+                        // Set the GameState to ReadyToStart
+                        GameState = GameState.ReadyToStart;
+
                         break;
                     case GameState.ReadyToStart:
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
+                        outputProvider.WriteLine(LoadText.GetRandomPhrase());
+                        String userInput = inputProvider.Read();
+
                         break;
                     case GameState.RaceStarted:
                         // TODO display the game screen
