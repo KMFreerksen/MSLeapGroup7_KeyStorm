@@ -59,8 +59,7 @@ namespace KeyStorm
                         // Display the main menu
                         outputProvider.WriteLine("Welcome to KeyStorm!");
                         outputProvider.WriteLine("Press any key to start the game");
-                        // TODO: move this to the StartGame class
-                        outputProvider.WriteLine(LoadText.GetRandomPhrase());
+                        
 
                         // Read the input
                         inputProvider.Read();
@@ -68,6 +67,7 @@ namespace KeyStorm
                     case GameState.ReadyToStart:
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
+                        outputProvider.WriteLine(LoadText.GetRandomPhrase());
                         break;
                     case GameState.RaceStarted:
                         // TODO display the game screen
