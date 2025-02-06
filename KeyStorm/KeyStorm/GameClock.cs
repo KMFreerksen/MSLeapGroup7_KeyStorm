@@ -26,7 +26,6 @@ public static class GameClock
         ProcessStartInfo startInfo = new ProcessStartInfo
         {
             FileName = "GameClockApp.exe", // Path to the new console application
-            Arguments = seconds.ToString(),
             UseShellExecute = true
         };
 
