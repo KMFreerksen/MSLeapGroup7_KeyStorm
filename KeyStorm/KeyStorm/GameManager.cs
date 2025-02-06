@@ -63,11 +63,17 @@ namespace KeyStorm
 
                         // Read the input
                         inputProvider.Read();
+
+                        // Set the GameState to ReadyToStart
+                        GameState = GameState.ReadyToStart;
+
                         break;
                     case GameState.ReadyToStart:
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
                         outputProvider.WriteLine(LoadText.GetRandomPhrase());
+                        String userInput = inputProvider.Read();
+
                         break;
                     case GameState.RaceStarted:
                         // TODO display the game screen
