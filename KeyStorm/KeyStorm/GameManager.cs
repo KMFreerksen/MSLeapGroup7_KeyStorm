@@ -17,6 +17,8 @@ namespace KeyStorm
 
         private IOutputProvider outputProvider;
 
+        private bool exitLoop = false;
+
         private LoadText LoadText;
 
         public GameState GameState { get; private set; }
@@ -50,32 +52,34 @@ namespace KeyStorm
         }
 
         // Start game method to begin the game loop
-        public async Task StartGame()
+        public void StartGame()
         {
-            while (true) // main game loop
+            while (!exitLoop) // main game loop
             {
-                GameState = GameState.RaceStarted;
+
                 switch (GameState)
                 {
                     case GameState.MainMenu:
                         // Display the main menu
                         outputProvider.WriteLine("Welcome to KeyStorm!");
                         outputProvider.WriteLine("Press any key to start the game");
-                        
+
 
                         // Read the input
-                        inputProvider.Read();
+                        Console.ReadKey();
+                        outputProvider.Clear();
 
                         // Set the GameState to ReadyToStart
                         GameState = GameState.ReadyToStart;
-
                         break;
+
                     case GameState.ReadyToStart:
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
                         outputProvider.WriteLine(LoadText.GetRandomPhrase());
-                        String userInput = inputProvider.Read();
+                        //String userInput = inputProvider.Read();
 
+                        GameState = GameState.RaceStarted;
                         break;
                     case GameState.RaceStarted:
                         // TODO display the game screen
@@ -92,7 +96,8 @@ namespace KeyStorm
                     case GameState.RaceOver:
                         // TODO display the
                         outputProvider.WriteLine("Game Over!");
-                        break;
+                        exitLoop = true;
+                        break ;
 
                     case GameState.GameOverLeaderboard:
                         // TODO display the game over leaderboard

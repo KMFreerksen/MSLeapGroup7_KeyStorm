@@ -25,14 +25,22 @@ public static class GameClock
         //return false;
         ProcessStartInfo startInfo = new ProcessStartInfo
         {
-            FileName = "GameClockApp.exe", // Path to the new console application
+            FileName = "C:\\Users\\t-ryanmoses\\source\\repos\\LeaperChooseAGame_Group7\\KeyStorm\\GameClockApp\\bin\\Debug\\net8.0\\GameClockApp.exe", // Path to the new console application
             UseShellExecute = true
         };
 
         Process clockProcess = Process.Start(startInfo);
-        clockProcess.WaitForExit();
+        // Wait for the process to exit within the specified timeout
+        bool exited = clockProcess.WaitForExit(8 * 1000);
 
-        return false;
+        if (!exited)
+        {
+            // If the process did not exit within the timeout, kill it
+            clockProcess.Kill();
+            OutputProvider.WriteLine("The countdown process was terminated due to timeout.");
+        }
+
+        return true;
     }
 }
 
