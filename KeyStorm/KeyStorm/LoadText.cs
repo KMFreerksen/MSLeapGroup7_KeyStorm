@@ -34,7 +34,7 @@ namespace KeyStorm
         /// <summary>
         /// Gets a random phrases from the list of phrases
         /// </summary>
-        /// <returns></returns>
+        /// <returns>String</returns>
         public string GetRandomPhrase()
         {
             if (textPhraseStrings == null || textPhraseStrings.Count == 0)
