@@ -71,16 +71,45 @@ namespace KeyStorm
                     case GameState.ReadyToStart:
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
+
+                        
                         outputProvider.WriteLine(LoadText.GetRandomPhrase());
+                        outputProvider.WriteLine();
+                        outputProvider.WriteLine("Press Enter to start your response");
                         String userInput = inputProvider.Read();
+                        
+                         GameState = GameState.RaceStarted;
+                        
 
                         break;
+
                     case GameState.RaceStarted:
                         // TODO display the game screen
                         // TODO handle user input for the game screen
+                        // blank line
+                        outputProvider.WriteLine();
+                        // Enter the input
+                        String input = inputProvider.Read();
+
+                        // Check if the input is empty
+                        if (string.IsNullOrEmpty(input))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            GameState = GameState.RaceOver;
+                        }
+
                         break;
                     case GameState.RaceOver:
-                    // TODO display the
+                        // display game menu
+                        outputProvider.WriteLine("Game Over!");
+
+                        // Delay for 5 seconds
+                        System.Threading.Thread.Sleep(5000);
+                        break;
+
                     case GameState.GameOverLeaderboard:
                         // TODO display the game over leaderboard
                         // TODO handle user input for the game over leaderboard
