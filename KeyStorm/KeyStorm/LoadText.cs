@@ -27,7 +27,6 @@ namespace KeyStorm
             if (File.Exists(filePath))
             {
                 textPhraseStrings = new List<string>(File.ReadAllLines(filePath));
-                Console.WriteLine("File loaded successfully.");
             }
             else throw new FileNotFoundException("Puzzle file not found.");
         }
