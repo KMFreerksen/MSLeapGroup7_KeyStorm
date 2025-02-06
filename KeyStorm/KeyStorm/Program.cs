@@ -4,7 +4,8 @@
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to KeyStorm!");
+            var gm = new GameManager();
+            gm.StartGame();
         }
     }
 }
