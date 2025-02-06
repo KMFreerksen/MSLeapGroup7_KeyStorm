@@ -68,17 +68,13 @@ namespace KeyStorm
                     case GameState.RaceStarted:
                         // TODO display the game screen
                         // TODO handle user input for the game screen
-                        Stopwatch stopwatch = new Stopwatch();
-                        stopwatch.Start();
 
-                        outputProvider.WriteLine("Started Game");
-                        while (stopwatch.Elapsed.TotalSeconds < 5)
+                        // Call the GameClock.CountDown method to start the countdown
+                        bool gameOver = GameClock.CountDown();
+                        if (gameOver)
                         {
-                            inputProvider.Read();
+                            GameState = GameState.RaceOver;
                         }
-                        outputProvider.WriteLine("Game done up!");
-                        GameState = GameState.RaceOver;
-                        stopwatch.Stop();
 
                         break;
                     case GameState.RaceOver:

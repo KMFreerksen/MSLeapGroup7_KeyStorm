@@ -13,17 +13,27 @@ public static class GameClock
     }
 
 
-    public static bool CountDown(int seconds)
+    public static bool CountDown()
     {
-        Stopwatch stopwatch = new Stopwatch();
+        //Stopwatch stopwatch = new Stopwatch();
 
-        while (stopwatch.Elapsed.TotalSeconds < seconds)
+        //while (stopwatch.Elapsed.TotalSeconds < seconds)
+        //{
+        //    //OutputProvider.WriteLine($"{seconds - stopwatch.Elapsed.TotalSeconds:F2} seconds remaining");
+        //    stopwatch.Start();
+        //}
+        //return false;
+        ProcessStartInfo startInfo = new ProcessStartInfo
         {
-            //OutputProvider.WriteLine($"{seconds - stopwatch.Elapsed.TotalSeconds:F2} seconds remaining");
-            stopwatch.Start();
-        }
-        return false;
+            FileName = "GameClockApp.exe", // Path to the new console application
+            Arguments = seconds.ToString(),
+            UseShellExecute = true
+        };
 
+        Process clockProcess = Process.Start(startInfo);
+        clockProcess.WaitForExit();
+
+        return false;
     }
 }
 
