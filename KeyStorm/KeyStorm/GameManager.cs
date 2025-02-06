@@ -77,7 +77,7 @@ namespace KeyStorm
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
                         outputProvider.WriteLine(LoadText.GetRandomPhrase());
-                        //String userInput = inputProvider.Read();
+                        String userInput = inputProvider.Read();
 
                         GameState = GameState.RaceStarted;
                         break;
@@ -86,18 +86,20 @@ namespace KeyStorm
                         // TODO handle user input for the game screen
 
                         // Call the GameClock.CountDown method to start the countdown
-                        bool gameOver = GameClock.CountDown();
+                        bool gameOver = true;
                         if (gameOver)
                         {
-                            GameState = GameState.RaceOver;
+                            gameOver = GameClock.CountDown();
+                            outputProvider.WriteLine("Playing the Game");
                         }
+                        GameState = GameState.RaceOver;
 
                         break;
                     case GameState.RaceOver:
                         // TODO display the
                         outputProvider.WriteLine("Game Over!");
                         exitLoop = true;
-                        break ;
+                        break;
 
                     case GameState.GameOverLeaderboard:
                         // TODO display the game over leaderboard
