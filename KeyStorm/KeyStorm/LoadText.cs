@@ -1,17 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace KeyStorm
 {
     public class LoadText
     {
-        // need a method that I can call in the program.cs file that outputs the Here we read the txt file
-        public void Load()
+        private List<string>? textPhraseStrings;
+
+        /// <summary>
+        /// Load the phrases from a file
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <exception cref="FileNotFoundException"></exception>
+        public void Load(string filePath)
         {
-            Console.WriteLine("Here we read the txt file");
+            // Combine the base directory with the relative path
+            string? baseDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.Parent?.Parent?.FullName;
+            if (baseDirectory == null)
+            {
+                throw new InvalidOperationException("Base directory could not be determined.");
+            }
+
+            filePath = Path.Combine(baseDirectory, filePath);
+
+            // Check if the file exists
+            if (File.Exists(filePath))
+            {
+                textPhraseStrings = new List<string>(File.ReadAllLines(filePath));
+                Console.WriteLine("File loaded successfully.");
+            }
+            else throw new FileNotFoundException("Puzzle file not found.");
+        }
+
+        /// <summary>
+        /// Gets a random phrases from the list of phrases
+        /// </summary>
+        /// <returns></returns>
+        public string GetRandomPhrase()
+        {
+            if (textPhraseStrings == null || textPhraseStrings.Count == 0)
+            {
+                throw new InvalidOperationException("No phrases loaded.");
+            }
+            Random random = new Random();
+            return textPhraseStrings![random.Next(0, textPhraseStrings.Count)];
         }
     }
 }
