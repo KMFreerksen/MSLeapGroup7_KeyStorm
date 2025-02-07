@@ -16,6 +16,12 @@ namespace KeyStorm.Interfaces
         /// </summary>
         /// <returns>The input</returns>
         string Read();
+
+        /// <summary>
+        /// Read a single key input
+        /// </summary>
+        /// <returns>The key input</returns>
+        char ReadKey();
     }
 
 }

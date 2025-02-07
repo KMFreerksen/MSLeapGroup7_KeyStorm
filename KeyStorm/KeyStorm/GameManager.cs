@@ -88,14 +88,23 @@ namespace KeyStorm
                         outputProvider.WriteLine("\nType The Phrase: Press Enter When Timer Completes\n");
 
 
-                        string userInput = inputProvider.Read();
-                        //do your logic here yesica
+                        StringBuilder userInput = new StringBuilder();
+                        while (!clockProcess.HasExited)
+                        {
+                            if (Console.KeyAvailable)
+                            {
+                                char key = inputProvider.ReadKey();
+                                userInput.Append(key);
+                                outputProvider.Write(key.ToString());
+                            }
+                        }
+                        //do your logic here yesica with userInput.ToString();
 
                         GameState = GameState.RaceOver;
                         break;
                     case GameState.RaceOver:
                         // TODO display the
-                        outputProvider.WriteLine("Game Over!");
+                        outputProvider.WriteLine("\nGame Over!");
                         GameState = GameState.GameOverLeaderboard;
                         break;
 
