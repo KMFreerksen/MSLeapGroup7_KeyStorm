@@ -18,6 +18,8 @@ namespace KeyStorm
         private IOutputProvider outputProvider;
 
         private LoadText LoadText;
+        private FeedbackProvider feedbackProvider;
+        private int currentIndex;
 
         private string? phrase;
 
@@ -44,6 +46,8 @@ namespace KeyStorm
             // Set the input provider and output provider
             this.inputProvider = inputProvider;
             this.outputProvider = outputProvider;
+            this.feedbackProvider = new FeedbackProvider();
+            this.currentIndex = 0;
 
             // Set the GameState to MainMenu
             GameState = GameState.MainMenu;
@@ -100,6 +104,9 @@ namespace KeyStorm
                         break;
 
                     case GameState.ReadyToStart:
+                        // TODO display the ready to start screen
+                        // TODO handle user input for the ready to start screen
+                        currentIndex = 0;
                         // Display the phrase
                         phrase = LoadText.GetRandomPhrase();
                         outputProvider.WriteLine(phrase);
@@ -107,6 +114,9 @@ namespace KeyStorm
                         GameState = GameState.RaceStarted;
                         break;
                     case GameState.RaceStarted:
+                        // TODO display the game screen
+                        // TODO handle user input for the game screen
+
                        // Call the GameClock.CountDown method to start the countdown
                         Process clockProcess = GameClock.CountDown();
                         
@@ -119,11 +129,13 @@ namespace KeyStorm
                         StringBuilder userInput = new StringBuilder();
                         while (!clockProcess.HasExited)
                         {
-                            if (Console.KeyAvailable)
+                            if (currentIndex < phrase!.Length && Console.KeyAvailable)
                             {
-                                char key = inputProvider.ReadKey();
-                                userInput.Append(key);
-                                outputProvider.Write(key.ToString());
+                                char inputChar = inputProvider.ReadKey();
+                                userInput.Append(inputChar);
+                                feedbackProvider.ProvideFeedback(inputChar, phrase[currentIndex]);
+                                if (inputChar == phrase[currentIndex]) currentIndex++;
+
                             }
                         }
                         // Capture the end time
@@ -154,10 +166,11 @@ namespace KeyStorm
                         break;
                     case GameState.RaceOver:
                         // TODO display the
-                        outputProvider.WriteLine("\nGame Over!");
-                        GameState = GameState.GameOverLeaderboard;
+                        outputProvider.WriteLine("Race Over! Press any key to return to the main menu.");
+                        Console.ReadKey(true);
+                        Console.Clear();
+                        GameState = GameState.MainMenu;
                         break;
-
                     case GameState.GameOverLeaderboard:
                         // TODO display the game over leaderboard
                         // TODO handle user input for the game over leaderboard
