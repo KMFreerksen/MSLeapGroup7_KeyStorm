@@ -38,6 +38,12 @@ namespace KeyStorm
             Console.WriteLine();
         }
 
+        public void DisplayAtPosition(string output, int left, int top)
+        {
+            Console.SetCursorPosition(left, top);
+            Console.Write(output);
+        }
+
         /// <summary>
         /// Clear the output
         /// </summary>
