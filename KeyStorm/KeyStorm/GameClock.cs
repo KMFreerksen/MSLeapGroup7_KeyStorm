@@ -15,29 +15,25 @@ public static class GameClock
 
     public static bool CountDown()
     {
-        //Stopwatch stopwatch = new Stopwatch();
+        // Construct the dynamic file path
+        string currentDirectory = Directory.GetCurrentDirectory();
+        string relativePath = @"..\..\..\..\GameClockApp\bin\Debug\net8.0\GameClockApp.exe";
+        string filePath = Path.GetFullPath(Path.Combine(currentDirectory, relativePath));
 
-        //while (stopwatch.Elapsed.TotalSeconds < seconds)
-        //{
-        //    //OutputProvider.WriteLine($"{seconds - stopwatch.Elapsed.TotalSeconds:F2} seconds remaining");
-        //    stopwatch.Start();
-        //}
-        //return false;
         ProcessStartInfo startInfo = new ProcessStartInfo
         {
-            FileName = "C:\\Users\\t-ryanmoses\\source\\repos\\LeaperChooseAGame_Group7\\KeyStorm\\GameClockApp\\bin\\Debug\\net8.0\\GameClockApp.exe", // Path to the new console application
+            FileName = filePath,
             UseShellExecute = true
         };
 
         Process clockProcess = Process.Start(startInfo);
         // Wait for the process to exit within the specified timeout
-        bool exited = clockProcess.WaitForExit(8 * 1000);
+        bool exited = clockProcess.WaitForExit(15 * 1000);
 
         if (!exited)
         {
             // If the process did not exit within the timeout, kill it
             clockProcess.Kill();
-            OutputProvider.WriteLine("The countdown process was terminated due to timeout.");
         }
 
         return true;

@@ -13,10 +13,15 @@ namespace GameClockApp
         }
         static void CountDown(int seconds)
         {
+            Console.WriteLine("Ready");
+            Thread.Sleep(2000);
+            Console.WriteLine("Go");
+            Thread.Sleep(1000);
+
             while (seconds > 0)
             {
-                Console.SetWindowSize(10, 10);
                 Console.Clear();
+                Console.SetWindowSize(10, 10);
                 
                 Console.SetCursorPosition(Console.WindowWidth - 5, 0);
                 Console.WriteLine($"00:{seconds:D2}");
@@ -25,10 +30,12 @@ namespace GameClockApp
             }
 
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Time's up!");
             Console.BackgroundColor = ConsoleColor.Red;
-            Console.WriteLine(new string(' ', Console.WindowWidth - 10));
+
+
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.WriteLine("Time's up!");
+            Console.WriteLine(new string(' ', Console.WindowWidth));
             Thread.Sleep(2000);
         }
 

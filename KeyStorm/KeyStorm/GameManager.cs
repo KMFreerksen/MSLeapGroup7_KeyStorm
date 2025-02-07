@@ -17,8 +17,6 @@ namespace KeyStorm
 
         private IOutputProvider outputProvider;
 
-        private bool exitLoop = false;
-
         private LoadText LoadText;
 
         public GameState GameState { get; private set; }
@@ -54,7 +52,7 @@ namespace KeyStorm
         // Start game method to begin the game loop
         public void StartGame()
         {
-            while (!exitLoop) // main game loop
+            while (true) // main game loop
             {
 
                 switch (GameState)
@@ -77,7 +75,7 @@ namespace KeyStorm
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
                         outputProvider.WriteLine(LoadText.GetRandomPhrase());
-                        String userInput = inputProvider.Read();
+                        //String userInput = inputProvider.Read();
 
                         GameState = GameState.RaceStarted;
                         break;
@@ -98,7 +96,7 @@ namespace KeyStorm
                     case GameState.RaceOver:
                         // TODO display the
                         outputProvider.WriteLine("Game Over!");
-                        exitLoop = true;
+                        GameState = GameState.GameOverLeaderboard;
                         break;
 
                     case GameState.GameOverLeaderboard:
