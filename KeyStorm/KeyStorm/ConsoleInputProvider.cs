@@ -20,6 +20,14 @@ namespace KeyStorm
         {
             return Console.ReadLine();
         }
+
+        public char ReadKey()
+        {
+            while (!Console.KeyAvailable)
+            {
+                // wait for a key press
+            }
+            return Console.ReadKey(intercept: true).KeyChar;
+        }
     }
- 
 }

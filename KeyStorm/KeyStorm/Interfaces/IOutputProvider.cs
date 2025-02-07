@@ -28,6 +28,8 @@ namespace KeyStorm.Interfaces
         /// </summary>
         void WriteLine();
 
+        public void DisplayAtPosition(string output, int left, int top);
+
         /// <summary>
         /// Clear the output
         /// </summary>
