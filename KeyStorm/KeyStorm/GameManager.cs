@@ -20,7 +20,6 @@ namespace KeyStorm
         private LoadText LoadText;
         private FeedbackProvider feedbackProvider;
         private int currentIndex;
-        private string randomPhrase;
 
         private string? phrase;
 
@@ -49,7 +48,6 @@ namespace KeyStorm
             this.outputProvider = outputProvider;
             this.feedbackProvider = new FeedbackProvider();
             this.currentIndex = 0;
-            this.randomPhrase = String.Empty;
 
             // Set the GameState to MainMenu
             GameState = GameState.MainMenu;
@@ -108,8 +106,6 @@ namespace KeyStorm
                     case GameState.ReadyToStart:
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
-                        randomPhrase = LoadText.GetRandomPhrase();
-                        outputProvider.WriteLine(randomPhrase);
                         currentIndex = 0;
                         // Display the phrase
                         phrase = LoadText.GetRandomPhrase();
@@ -120,16 +116,6 @@ namespace KeyStorm
                     case GameState.RaceStarted:
                         // TODO display the game screen
                         // TODO handle user input for the game screen
-                        if (currentIndex < randomPhrase.Length)
-                        {
-                            char inputChar = Console.ReadKey(true).KeyChar;
-                            feedbackProvider.ProvideFeedback(inputChar, randomPhrase[currentIndex]);
-                            if (inputChar == randomPhrase[currentIndex]) currentIndex++;
-                            
-                        }
-                        
-                        // Set the GameState to RaceOver when the phrase is completed
-                        else GameState = GameState.RaceOver;
 
                        // Call the GameClock.CountDown method to start the countdown
                         Process clockProcess = GameClock.CountDown();
@@ -143,11 +129,13 @@ namespace KeyStorm
                         StringBuilder userInput = new StringBuilder();
                         while (!clockProcess.HasExited)
                         {
-                            if (Console.KeyAvailable)
+                            if (currentIndex < phrase!.Length && Console.KeyAvailable)
                             {
-                                char key = inputProvider.ReadKey();
-                                userInput.Append(key);
-                                outputProvider.Write(key.ToString());
+                                char inputChar = inputProvider.ReadKey();
+                                userInput.Append(inputChar);
+                                feedbackProvider.ProvideFeedback(inputChar, phrase[currentIndex]);
+                                if (inputChar == phrase[currentIndex]) currentIndex++;
+
                             }
                         }
                         // Capture the end time
