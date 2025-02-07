@@ -48,6 +48,35 @@ namespace KeyStorm
             LoadText.Load(@"text-phrases.txt");
         }
 
+        // Calculates correct words method
+        public (int correctWords, int incorrectWords) CalculateWords(string userInput, string phrase)
+        {
+            if (string.IsNullOrEmpty(userInput) || string.IsNullOrWhiteSpace(phrase))
+            {
+                return (0, 0);
+            }
+
+            int correctWords = 0;
+            int incorrectWords = 0;
+
+            string[] userWords = userInput.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string[] phraseWords = phrase.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < Math.Min(userWords.Length, phraseWords.Length); i++)
+            {
+                if (userWords[i].Trim().Equals(phraseWords[i].Trim(), StringComparison.OrdinalIgnoreCase))
+                {
+                    correctWords++;
+                }
+                else
+                {
+                    incorrectWords++;
+                }
+            }
+            incorrectWords += Math.Abs(userWords.Length - phraseWords.Length);
+            return (correctWords, incorrectWords);
+        }
+
         // Start game method to begin the game loop
         public void StartGame()
         {
@@ -71,8 +100,31 @@ namespace KeyStorm
                     case GameState.ReadyToStart:
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
-                        outputProvider.WriteLine(LoadText.GetRandomPhrase());
-                        String userInput = inputProvider.Read();
+                        // Display the phrase
+                        string phrase = LoadText.GetRandomPhrase();
+                        outputProvider.WriteLine(phrase);
+
+                        // Capture the start time
+                        DateTime startTime = DateTime.Now;
+
+                        // Read the user input
+                        string userInput = inputProvider.Read();
+
+                        // Capture the end time
+                        DateTime endTime = DateTime.Now;
+
+                        // Calculate the total time in seconds
+                        double totalTimeInSeconds = (endTime - startTime).TotalSeconds;
+
+                        // Calculate words per minute
+                        WordCounter wordCounter = new WordCounter();
+                        double wpm = wordCounter.CalculateWPM(userInput, totalTimeInSeconds);
+
+                        var (correctWords, incorrectWords) = CalculateWords(userInput, phrase);
+
+                        outputProvider.WriteLine($"Your words per minute: {wpm:F2}");
+                        outputProvider.WriteLine($"Correct words: {correctWords}");
+                        outputProvider.WriteLine($"Incorrect words: {incorrectWords}");
 
                         break;
                     case GameState.RaceStarted:
