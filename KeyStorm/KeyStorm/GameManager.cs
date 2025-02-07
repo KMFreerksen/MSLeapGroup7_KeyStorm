@@ -86,6 +86,7 @@ namespace KeyStorm
 
                         // Call the GameClock.CountDown method to start the countdown
                         Process clockProcess = GameClock.CountDown();
+                        Thread.Sleep(3000);
                         stopwatch.Start();
 
                         outputProvider.WriteLine("\nType The Phrase: \n");
@@ -102,18 +103,20 @@ namespace KeyStorm
                             }
                         }
 
-                        if (stopwatch.Elapsed.TotalSeconds > 30)
+                        stopwatch.Stop();
+                        seconds = stopwatch.Elapsed.TotalSeconds;
+
+                        if (seconds >= 30)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             outputProvider.WriteLine("\n\nTime's up!");
                             Console.ResetColor();
                         }
-                        stopwatch.Stop();
-                        seconds = stopwatch.Elapsed.TotalSeconds;
 
                         outputProvider.WriteLine();
-                        outputProvider.WriteLine($"Time elasped: {seconds.ToString()}");
+
                         //do your logic here yesica with userInput.ToString();
+                        outputProvider.WriteLine($"Time elasped: {seconds.ToString()}");
 
                         GameState = GameState.RaceOver;
                         break;
