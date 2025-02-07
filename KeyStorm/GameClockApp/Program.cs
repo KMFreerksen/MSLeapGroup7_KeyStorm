@@ -12,8 +12,10 @@ namespace GameClockApp
         static void CountDown(int seconds)
         {
             Console.WriteLine("Ready...Wait For Timer To Start".ToUpper());
-            Console.WriteLine("Press Enter When the Timer Finishes!!!!".ToUpper());
-            Thread.Sleep(2000);
+            Console.WriteLine("3");
+            Thread.Sleep(1000);
+            Console.WriteLine("2");
+            Thread.Sleep(1000);
             Console.WriteLine("Go!!!".ToUpper());
             Thread.Sleep(1000);
 
