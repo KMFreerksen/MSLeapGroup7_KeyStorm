@@ -13,7 +13,7 @@ public static class GameClock
     }
 
 
-    public static bool CountDown()
+    public static Process CountDown()
     {
         // Construct the dynamic file path
         string currentDirectory = Directory.GetCurrentDirectory();
@@ -27,16 +27,17 @@ public static class GameClock
         };
 
         Process clockProcess = Process.Start(startInfo);
+
         // Wait for the process to exit within the specified timeout
-        bool exited = clockProcess.WaitForExit(15 * 1000);
+        //bool exited = clockProcess.WaitForExit(40 * 1000);
 
-        if (!exited)
-        {
-            // If the process did not exit within the timeout, kill it
-            clockProcess.Kill();
-        }
+        //if (!exited)
+        //{
+        //    // If the process did not exit within the timeout, kill it
+        //    clockProcess.Kill();
+        //}
 
-        return true;
+        return clockProcess;
     }
 }
 

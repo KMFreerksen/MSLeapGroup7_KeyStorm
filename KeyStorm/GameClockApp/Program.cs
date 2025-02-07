@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace GameClockApp
 {
@@ -6,38 +7,32 @@ namespace GameClockApp
     {
         static void Main(string[] args)
         {
-
-            CountDown(5);
-
-
+            CountDown(30);
         }
         static void CountDown(int seconds)
         {
-            Console.WriteLine("Ready");
+            Console.WriteLine("Ready...Wait For Timer To Start".ToUpper());
+            Console.WriteLine("Press Enter When the Timer Finishes!!!!".ToUpper());
             Thread.Sleep(2000);
-            Console.WriteLine("Go");
+            Console.WriteLine("Go!!!".ToUpper());
             Thread.Sleep(1000);
 
             while (seconds > 0)
             {
                 Console.Clear();
-                Console.SetWindowSize(10, 10);
-                
                 Console.SetCursorPosition(Console.WindowWidth - 5, 0);
                 Console.WriteLine($"00:{seconds:D2}");
                 Thread.Sleep(1000);
                 seconds--;
             }
 
-            Console.Clear();
             Console.BackgroundColor = ConsoleColor.Red;
+            Console.Clear();
 
-
-            Console.Write(new string(' ', Console.WindowWidth));
             Console.WriteLine("Time's up!");
-            Console.WriteLine(new string(' ', Console.WindowWidth));
-            Thread.Sleep(2000);
+            Console.WriteLine(new string(' ', 30));
+            Thread.Sleep(1000);
+            Environment.Exit(0);
         }
-
     }
 }
