@@ -85,7 +85,7 @@ namespace KeyStorm
                         // Call the GameClock.CountDown method to start the countdown
                         Process clockProcess = GameClock.CountDown();
 
-                        outputProvider.WriteLine("Type Phrase: ");
+                        outputProvider.WriteLine("\nType The Phrase: Press Enter When Timer Completes\n");
 
 
                         string userInput = inputProvider.Read();
