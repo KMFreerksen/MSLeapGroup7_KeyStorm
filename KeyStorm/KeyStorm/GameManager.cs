@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace KeyStorm
         {
         }
 
-        public GameManager(IInputProvider inputProvider, IOutputProvider outputProvider) 
+        public GameManager(IInputProvider inputProvider, IOutputProvider outputProvider)
 
         {
             // Error handling for null input providers
@@ -82,21 +83,23 @@ namespace KeyStorm
         {
             while (true) // main game loop
             {
+
                 switch (GameState)
                 {
                     case GameState.MainMenu:
                         // Display the main menu
                         outputProvider.WriteLine("Welcome to KeyStorm!");
                         outputProvider.WriteLine("Press any key to start the game");
-                        
+
 
                         // Read the input
-                        inputProvider.Read();
+                        Console.ReadKey();
+                        outputProvider.Clear();
 
                         // Set the GameState to ReadyToStart
                         GameState = GameState.ReadyToStart;
-
                         break;
+
                     case GameState.ReadyToStart:
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
@@ -126,13 +129,56 @@ namespace KeyStorm
                         outputProvider.WriteLine($"Correct words: {correctWords}");
                         outputProvider.WriteLine($"Incorrect words: {incorrectWords}");
 
+                        GameState = GameState.RaceStarted;
                         break;
                     case GameState.RaceStarted:
                         // TODO display the game screen
                         // TODO handle user input for the game screen
+                        Stopwatch stopwatch = new Stopwatch();
+                        double seconds = 0.00;
+
+                        // Call the GameClock.CountDown method to start the countdown
+                        Process clockProcess = GameClock.CountDown();
+                        Thread.Sleep(3000);
+                        stopwatch.Start();
+
+                        outputProvider.WriteLine("\nType The Phrase: \n");
+
+
+                        StringBuilder userInput = new StringBuilder();
+                        while (!clockProcess.HasExited)
+                        {
+                            if (Console.KeyAvailable)
+                            {
+                                char key = inputProvider.ReadKey();
+                                userInput.Append(key);
+                                outputProvider.Write(key.ToString());
+                            }
+                        }
+
+                        stopwatch.Stop();
+                        seconds = stopwatch.Elapsed.TotalSeconds;
+
+                        if (seconds >= 30)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            outputProvider.WriteLine("\n\nTime's up!");
+                            Console.ResetColor();
+                        }
+
+                        outputProvider.WriteLine();
+
+                        //do your logic here yesica with userInput.ToString();
+                        outputProvider.WriteLine($"Time elasped: {seconds.ToString()}");
+
+                        GameState = GameState.RaceOver;
                         break;
                     case GameState.RaceOver:
-                    // TODO display the
+                        // TODO display the
+                        outputProvider.WriteLine("\nGame Over!");
+                        GameState = GameState.GameOverLeaderboard;
+                        break;
+
                     case GameState.GameOverLeaderboard:
                         // TODO display the game over leaderboard
                         // TODO handle user input for the game over leaderboard
