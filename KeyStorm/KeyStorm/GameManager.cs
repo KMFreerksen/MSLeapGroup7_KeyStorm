@@ -19,6 +19,8 @@ namespace KeyStorm
 
         private LoadText LoadText;
 
+        private string? phrase;
+
         public GameState GameState { get; private set; }
 
         // Constructor for the GameManager class
@@ -49,19 +51,45 @@ namespace KeyStorm
             LoadText.Load(@"text-phrases.txt");
         }
 
+        // Calculates correct words method
+        public (int correctWords, int incorrectWords) CalculateWords(string userInput, string phrase)
+        {
+            if (string.IsNullOrEmpty(userInput) || string.IsNullOrWhiteSpace(phrase))
+            {
+                return (0, 0);
+            }
+
+            int correctWords = 0;
+            int incorrectWords = 0;
+
+            string[] userWords = userInput.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string[] phraseWords = phrase.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < Math.Min(userWords.Length, phraseWords.Length); i++)
+            {
+                if (userWords[i].Trim().Equals(phraseWords[i].Trim(), StringComparison.OrdinalIgnoreCase))
+                {
+                    correctWords++;
+                }
+                else
+                {
+                    incorrectWords++;
+                }
+            }
+            incorrectWords += Math.Abs(userWords.Length - phraseWords.Length);
+            return (correctWords, incorrectWords);
+        }
         // Start game method to begin the game loop
         public void StartGame()
         {
             while (true) // main game loop
             {
-
                 switch (GameState)
                 {
                     case GameState.MainMenu:
                         // Display the main menu
                         outputProvider.WriteLine("Welcome to KeyStorm!");
                         outputProvider.WriteLine("Press any key to start the game");
-
 
                         // Read the input
                         Console.ReadKey();
@@ -72,25 +100,21 @@ namespace KeyStorm
                         break;
 
                     case GameState.ReadyToStart:
-                        // TODO display the ready to start screen
-                        // TODO handle user input for the ready to start screen
-                        outputProvider.WriteLine(LoadText.GetRandomPhrase());
+                        // Display the phrase
+                        phrase = LoadText.GetRandomPhrase();
+                        outputProvider.WriteLine(phrase);
 
                         GameState = GameState.RaceStarted;
                         break;
                     case GameState.RaceStarted:
-                        // TODO display the game screen
-                        // TODO handle user input for the game screen
-                        Stopwatch stopwatch = new Stopwatch();
-                        double seconds = 0.00;
-
-                        // Call the GameClock.CountDown method to start the countdown
+                       // Call the GameClock.CountDown method to start the countdown
                         Process clockProcess = GameClock.CountDown();
+                        
                         Thread.Sleep(3000);
-                        stopwatch.Start();
+                        // Capture the start time
+                        DateTime startTime = DateTime.Now;
 
                         outputProvider.WriteLine("\nType The Phrase: \n");
-
 
                         StringBuilder userInput = new StringBuilder();
                         while (!clockProcess.HasExited)
@@ -102,21 +126,29 @@ namespace KeyStorm
                                 outputProvider.Write(key.ToString());
                             }
                         }
+                        // Capture the end time
+                        DateTime endTime = DateTime.Now;
 
-                        stopwatch.Stop();
-                        seconds = stopwatch.Elapsed.TotalSeconds;
+                        // Calculate the total time in seconds
+                        double totalTimeInSeconds = (endTime - startTime).TotalSeconds;
 
-                        if (seconds >= 30)
+                        // Calculate words per minute
+                        WordCounter wordCounter = new WordCounter();
+                        double wpm = wordCounter.CalculateWPM(userInput.ToString(), totalTimeInSeconds);
+
+                        var (correctWords, incorrectWords) = CalculateWords(userInput.ToString(), phrase!);
+                        if (totalTimeInSeconds >= 30)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             outputProvider.WriteLine("\n\nTime's up!");
                             Console.ResetColor();
                         }
 
-                        outputProvider.WriteLine();
+                        outputProvider.WriteLine($"Your words per minute: {wpm:F2}");
+                        outputProvider.WriteLine($"Correct words: {correctWords}");
+                        outputProvider.WriteLine($"Incorrect words: {incorrectWords}");
 
-                        //do your logic here yesica with userInput.ToString();
-                        outputProvider.WriteLine($"Time elasped: {seconds.ToString()}");
+                        outputProvider.WriteLine();
 
                         GameState = GameState.RaceOver;
                         break;
