@@ -17,6 +17,9 @@ namespace KeyStorm
         private IOutputProvider outputProvider;
 
         private LoadText LoadText;
+        private FeedbackProvider feedbackProvider;
+        private int currentIndex;
+        private string randomPhrase;
 
         public GameState GameState { get; private set; }
 
@@ -41,6 +44,9 @@ namespace KeyStorm
             // Set the input provider and output provider
             this.inputProvider = inputProvider;
             this.outputProvider = outputProvider;
+            this.feedbackProvider = new FeedbackProvider();
+            this.currentIndex = 0;
+            this.randomPhrase = String.Empty;
 
             // Set the GameState to MainMenu
             GameState = GameState.MainMenu;
@@ -71,16 +77,36 @@ namespace KeyStorm
                     case GameState.ReadyToStart:
                         // TODO display the ready to start screen
                         // TODO handle user input for the ready to start screen
-                        outputProvider.WriteLine(LoadText.GetRandomPhrase());
-                        String userInput = inputProvider.Read();
+                        randomPhrase = LoadText.GetRandomPhrase();
+                        outputProvider.WriteLine(randomPhrase);
+                        currentIndex = 0;
+
+                        GameState = GameState.RaceStarted;
+                        //String userInput = inputProvider.Read();
 
                         break;
                     case GameState.RaceStarted:
                         // TODO display the game screen
                         // TODO handle user input for the game screen
+                        if (currentIndex < randomPhrase.Length)
+                        {
+                            char inputChar = Console.ReadKey(true).KeyChar;
+                            feedbackProvider.ProvideFeedback(inputChar, randomPhrase[currentIndex]);
+                            if (inputChar == randomPhrase[currentIndex]) currentIndex++;
+                            
+                        }
+                        
+                        // Set the GameState to RaceOver when the phrase is completed
+                        else GameState = GameState.RaceOver;
+
                         break;
                     case GameState.RaceOver:
-                    // TODO display the
+                        // TODO display the
+                        outputProvider.WriteLine("Race Over! Press any key to return to the main menu.");
+                        Console.ReadKey(true);
+                        Console.Clear();
+                        GameState = GameState.MainMenu;
+                        break;
                     case GameState.GameOverLeaderboard:
                         // TODO display the game over leaderboard
                         // TODO handle user input for the game over leaderboard
